@@ -1,10 +1,6 @@
 import { notFound } from "next/navigation";
 
-export default async function ProductDetail({
-    params,
-}: {
-    params: Promise<{ id: string }>;
-}) {
+export default async function ProductDetail({ params }: PageProps<"/products/[id]">) {
     const { id } = await params;
 
     const products = [
