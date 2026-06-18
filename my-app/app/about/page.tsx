@@ -1,4 +1,8 @@
-export default function About() {
+import wait from "@/lib/wait";
+
+export default async function About() {
+    await wait(5000);
+    throw new Error("Testing error page");
     return (
         <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
             <div className="max-w-2xl bg-white rounded-2xl shadow-lg p-8 text-center">
