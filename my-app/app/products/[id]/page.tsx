@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
+import FetchAPI from "@/components/FetchAPI";
 
 export default async function ProductDetail({ params }: PageProps<"/products/[id]">) {
     const { id } = await params;
 
-    const res = await fetch(`https://fakestoreapi.com/products/${id}`)
-    const product = await res.json() as TypeProducts | null;
+    const product: TypeProducts | null = await FetchAPI(`/products/${id}`);
 
     if (!product) {
         notFound();
