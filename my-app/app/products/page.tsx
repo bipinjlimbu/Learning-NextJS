@@ -1,32 +1,19 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
-export default function ProductsPage() {
-    const products = [
-        {
-            id: "1",
-            name: "Nike Air Max",
-            price: 120,
-            description: "Comfortable running shoes",
-        },
-        {
-            id: "2",
-            name: "Apple Watch",
-            price: 399,
-            description: "Smart watch with health tracking",
-        },
-        {
-            id: "3",
-            name: "Sony Headphones",
-            price: 199,
-            description: "Noise cancelling headphones",
-        },
-        {
-            id: "4",
-            name: "MacBook Pro",
-            price: 1999,
-            description: "High performance laptop",
-        },
-    ];
+type Product = {
+    id: number;
+    title: string;
+    price: number;
+    description: string;
+    category: string;
+    image: string;
+};
+
+export default async function ProductsPage() {
+    const res = await fetch('https://fakestoreapi.com/products')
+    const products = await res.json() as Product[] | null;
+    if (!products) return notFound();
 
     return (
         <div className="min-h-screen bg-gray-100 p-10">
@@ -36,29 +23,15 @@ export default function ProductsPage() {
 
             <div className="grid md:grid-cols-3 gap-6">
                 {products.map((product) => (
-                    <div
+                    <Link
                         key={product.id}
-                        className="bg-white rounded-xl shadow p-6 hover:shadow-lg transition"
+                        href={`/products/${product.id}`}
+                        className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center hover:shadow-lg transition-shadow"
                     >
-                        <h2 className="text-xl font-semibold">
-                            {product.name}
-                        </h2>
-
-                        <p className="text-gray-600 mt-2">
-                            {product.description}
-                        </p>
-
-                        <p className="text-green-600 font-bold mt-3">
-                            ${product.price}
-                        </p>
-
-                        <Link
-                            href={`/products/${product.id}`}
-                            className="inline-block mt-4 text-blue-600 hover:underline"
-                        >
-                            View Details →
-                        </Link>
-                    </div>
+                        <img src={product.image} alt={product.title} className="w-32 h-32 object-contain mb-4" />
+                        <h2 className="text-lg font-semibold text-center">{product.title}</h2>
+                        <p className="text-green-600 font-bold mt-2">${product.price}</p>
+                    </Link>
                 ))}
             </div>
         </div>
