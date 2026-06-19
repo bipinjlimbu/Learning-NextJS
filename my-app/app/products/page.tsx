@@ -1,18 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-type Product = {
-    id: number;
-    title: string;
-    price: number;
-    description: string;
-    category: string;
-    image: string;
-};
-
 export default async function ProductsPage() {
     const res = await fetch('https://fakestoreapi.com/products')
-    const products = await res.json() as Product[] | null;
+    const products = await res.json() as TypeProducts[] | null;
     if (!products) return notFound();
 
     return (
