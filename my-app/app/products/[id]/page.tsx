@@ -1,36 +1,19 @@
 import { notFound } from "next/navigation";
 
+type Product = {
+    id: number;
+    title: string;
+    price: number;
+    description: string;
+    category: string;
+    image: string;
+};
+
 export default async function ProductDetail({ params }: PageProps<"/products/[id]">) {
     const { id } = await params;
 
-    const products = [
-        {
-            id: "1",
-            name: "Nike Air Max",
-            price: 120,
-            description: "Comfortable running shoes for daily use",
-        },
-        {
-            id: "2",
-            name: "Apple Watch",
-            price: 399,
-            description: "Smart watch with fitness tracking",
-        },
-        {
-            id: "3",
-            name: "Sony Headphones",
-            price: 199,
-            description: "Noise cancelling premium sound",
-        },
-        {
-            id: "4",
-            name: "MacBook Pro",
-            price: 1999,
-            description: "High performance laptop",
-        },
-    ];
-
-    const product = products.find((p) => p.id === id);
+    const res = await fetch(`https://fakestoreapi.com/products/${id}`)
+    const product = await res.json() as Product | null;
 
     if (!product) {
         notFound();
@@ -39,7 +22,8 @@ export default async function ProductDetail({ params }: PageProps<"/products/[id
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
             <div className="bg-white w-full max-w-lg rounded-2xl shadow-lg p-8">
-                <h1 className="text-3xl font-bold">{product.name}</h1>
+                <img src={product.image} alt={product.title} className="w-full h-64 object-contain mb-4" />
+                <h1 className="text-3xl font-bold">{product.title}</h1>
 
                 <p className="text-gray-600 mt-4">{product.description}</p>
 
