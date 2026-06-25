@@ -1,4 +1,4 @@
-type TypeProduct = {
+type TypeProducts = {
     id: number;
     title: string;
     price: number;
@@ -8,3 +8,7 @@ type TypeProduct = {
     rating_rate: number;
     rating_count: number;
 };
+
+interface NewTypeProducts extends TypeProducts {
+
+}

@@ -10,7 +10,7 @@ export async function getProductFromDB() {
 
 }
 
-export async function createProductInDB(newProduct: TypeProduct) {
+export async function createProductInDB(newProduct: NewTypeProducts) {
     try {
         await db.execute
             ("insert into products (title, price, description, category, image, rating_rate, rating_count) values (?,?,?,?,?,?,?)",
