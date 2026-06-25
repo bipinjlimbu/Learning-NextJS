@@ -20,3 +20,31 @@ export async function createProductInDB(newProduct: NewTypeProducts) {
         throw error;
     }
 }
+
+export async function getProductByIdFromDB(id: number) {
+    try {
+        const [product] = await db.execute("select * from products where id = ?", [id]);
+        return product;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function updateProductInDB(id: number, updatedProduct: NewTypeProducts) {
+    try {
+        await db.execute
+            ("update products set title = ?, price = ?, description = ?, category = ?, image = ?, rating_rate = ?, rating_count = ? where id = ?",
+                [updatedProduct.title, updatedProduct.price, updatedProduct.description, updatedProduct.category, updatedProduct.image, updatedProduct.rating_rate, updatedProduct.rating_count, id]
+            )
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function deleteProductFromDB(id: number) {
+    try {
+        await db.execute("delete from products where id = ?", [id]);
+    } catch (error) {
+        throw error;
+    }
+}
