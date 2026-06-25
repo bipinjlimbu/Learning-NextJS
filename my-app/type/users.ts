@@ -3,3 +3,7 @@ type TypeUsers = {
     email: string;
     password: string;
 };
+
+interface TypeNewUser extends TypeUsers {
+
+}
