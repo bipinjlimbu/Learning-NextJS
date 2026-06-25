@@ -1,36 +1,45 @@
-import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/db";
+import { createUserInDB, getUserFromDB } from "@/services/userServices"
+import { NextRequest, NextResponse } from "next/server"
 
 export async function POST(req: NextRequest) {
     try {
-        const user = await req.json();
-        await db.execute(
-            "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
-            [user.username, user.email, user.password]
-        );
+        const user = await req.json()
 
-        return NextResponse.json(
-            { message: "POST request received", user: user },
-            { status: 200 }
-        );
+        console.log('post method triggered!')
+
+        await createUserInDB(user)
+
+        return NextResponse.json({
+            msg: "post method triggered of user ",
+            user
+        }, {
+            status: 200
+        })
+
     } catch (error) {
-        console.error("Error inserting user:", error);
-        return NextResponse.json(
-            { message: "Error inserting user", error: error },
-            { status: 500 }
-        );
+        return NextResponse.json({
+            msg: "error in creating user",
+
+            error
+        }, { status: 500 })
+
     }
 }
 
 export async function GET() {
     try {
-        const users = await db.query("SELECT * FROM users");
-        return NextResponse.json(users, { status: 200 });
+        const users = await getUserFromDB()
+
+        return NextResponse.json({
+            msg: "users fetched!!",
+            users
+        }, { status: 200 })
+
     } catch (error) {
-        console.error("Error fetching users:", error);
-        return NextResponse.json(
-            { message: "Error fetching users", error: error },
-            { status: 500 }
-        );
+        return NextResponse.json({
+            msg: "error during fetching users from database"
+            , error
+        }, { status: 500 })
+
     }
 }
